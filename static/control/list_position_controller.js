@@ -1,19 +1,20 @@
-function list_position_controller($scope, $http, $location, userService, authService) {
+function list_position_controller($scope, $http, $location, taggingService, authService) {
     $scope.sortType = 'id'; // set the default sort type
     $scope.sortReverse = false; // set the default sort order
     $scope.searchPositions = ''; // set the default search/filter term
-    $scope.positions = [];
+      var mainTags = ['intro', 'skills', 'close', 'inline'];
 
-    $scope.name = userService.getUserName();
-    $scope.role = userService.getUserRole();
+    $scope.loadPosition = function(index){
+       $location.path('/cp')
+                .hash(index);
+    };
 
-    var loadScreen = function() {
+    $scope.deletePosition = function (index, position) {
         authService.getUserToken(function(idToken) {
-            if ($scope.role != 'Admin' && $scope.role != 'Manager') {
+            $http.delete('../../position/' + position.id + '/tags/?idToken=' + idToken).success(function(){});
+            $http.delete('../../position/' + position.id + "?idToken=" + idToken).success(function() {
                 loadAllPositions(idToken);
-            } else {
-                loadAllPositions(idToken);
-            }
+            });
         });
     };
 
@@ -21,18 +22,7 @@ function list_position_controller($scope, $http, $location, userService, authSer
         $http.get('../../position/?idToken=' + idToken).then(function(data) {
             $scope.positions = data.data.positions;
             $scope.positions.forEach(function(p) {
-                console.log('name: '+ p.name + ' ' + 'description: '+ p.description);
                 stringifyTags(p,idToken);
-            });
-        });
-    };
-
-    var loadPosition = function(position, idToken) {
-        $http.get('../../position/').success(function(result) {
-            interview.position = result.position.name;
-            interview.position += getPositionID({
-                type: "Internal",
-                info: result.position
             });
         });
     };
@@ -48,5 +38,28 @@ function list_position_controller($scope, $http, $location, userService, authSer
         });
     };
 
-    loadScreen();
+    var loadAllTags = function(idToken) {
+        var tags = {};
+        $http.get('../../tag?idToken=' + idToken).success(function (data) {
+            data.tags.forEach(function(tag) {
+                tags[tag.name] = tag;
+            });
+            addMissingTags(tags);
+        });
+    };
+
+    var addMissingTags = function(tags) {
+        mainTags.forEach(function(tag) {
+           if(!tags[tag]) {
+               taggingService.createNewTag(tag);
+           }
+        });
+    };
+
+
+        authService.getUserToken(function(idToken) {
+            loadAllPositions(idToken);
+            loadAllTags(idToken);
+        });
+
 }

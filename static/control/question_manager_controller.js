@@ -32,7 +32,6 @@ function question_manager_controller($scope, $http, $location, taggingService, a
         question.taglist = "";
         $http.get('../../question/' + question.id + '/tags/?idToken=' + idToken).success(function(data) {
            data.tags.forEach(function(tag) {
-              console.log(tag.name);
                 question.taglist += tag.name + ", ";
            });
            question.taglist = question.taglist.substring(0, question.taglist.length - 2);

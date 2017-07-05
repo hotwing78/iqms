@@ -22,7 +22,7 @@ function create_question_controller ($scope, $rootScope, $location, $http, taggi
         authService.getUserToken(function(idToken) {
             $http.get('../../question/' + $location.hash() + "?idToken=" + idToken).success(function(data) {
                 $scope.questionData.text = data.question.text;
-                taggingService.loadSavedTags(data.question.id, idToken);
+                taggingService.loadSavedTags(data.question.id, idToken,'question');
                 refreshTags();
                 $('#modelValue').val(data.question.difficulty);
                 $scope.questionData.answers = data.question.answers;
@@ -52,19 +52,19 @@ function create_question_controller ($scope, $rootScope, $location, $http, taggi
             if(id > 0) {
                 $http.put('../../question/' + id + "?idToken=" + idToken, questionData).success(function(created) {
                     $location.path('/qm');
-                    taggingService.persistQuestionTag(id);
+                    taggingService.persistTag(id);
                 });
             } else if(id == -1) {
                 $http.post('../../question?idToken=' + idToken,  questionData).success(function(created) {
                     $location.path('/qm');
-                    taggingService.persistQuestionTag(created.question.id);
+                    taggingService.persistTag(created.question.id);
                 });
             } else if(id == -2) {
                 $http.post('../../question?idToken=' + idToken,  questionData).success(function(created) {
                     $scope.questionData = created.question;
                     $rootScope.$broadcast('interviewQuestion', $scope.questionData);
                     taggingService.addTag("inline");
-                    taggingService.persistQuestionTag(created.question.id);
+                    taggingService.persistTag(created.question.id,type);
                 });
             }
         });
@@ -90,7 +90,7 @@ function create_question_controller ($scope, $rootScope, $location, $http, taggi
         taggingService.setCategory($scope.questionData.category);
         refreshTags();
     };
-    
+
     $rootScope.$on("tagNotification", function() {
         refreshTags();
     });
@@ -99,12 +99,12 @@ function create_question_controller ($scope, $rootScope, $location, $http, taggi
         taggingService.removeTag(tag);
         refreshTags();
     };
-    
+
     var refreshTags = function() {
         $scope.questionData.category = taggingService.getCategory();
         $scope.questionData.tags = taggingService.getTags();
         $scope.questionData.selectedTags = taggingService.getSelectedTags();
     };
-    
+
     loadQuestion();
 }

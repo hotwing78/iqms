@@ -66,8 +66,124 @@ exports = module.exports = new Resource('position', '/position', {
         } else {
             res.status(401).json({error: "Forbidden"});
         }
-    }
-}), new Resource('add candidate to position', '/:id/cadidates/:candidate_id', {
+    },  delete: (req, res) => {
+          if(req.query.idToken) {
+              firebase.auth().verifyIdToken(req.query.idToken).then(function(decodedToken) {
+                  var uid = decodedToken.sub;
+                  models.position.destroy({
+                      where: {
+                          id: req.params.id
+                      }
+                  }).then(function (destroyed) {
+                      res.status(204).json({});
+                  })
+              }).catch(function(error) {
+                  res.status(511).json({error: "Error"});
+              });
+          } else {
+              res.status(401).json({error: "Forbidden"});
+          }
+      }
+}), new Resource('add tag to position', '/:id/tags/:tag_name', {
+        post: (req, res) => {
+            if(req.query.idToken) {
+                firebase.auth().verifyIdToken(req.query.idToken).then(function(decodedToken) {
+                    var uid = decodedToken.sub;
+                    models.position.findOne({
+                        where: {
+                            id: req.params.id
+                        }
+                    }).then(function (position) {
+                        models.tag.findOne({
+                            where: {
+                                name: req.params.tag_name
+                            }
+                        }).then(function (tag) {
+                            position.addTag(tag).then(function (added) {
+                                res.status(200).json({
+                                    added: added
+                                });
+                            })
+                        })
+                    })
+                }).catch(function(error) {
+                    res.status(511).json({error: "Error"});
+                });
+            } else {
+                res.status(401).json({error: "Forbidden"});
+            }
+        },
+        delete: (req, res) => {
+            if(req.query.idToken) {
+                firebase.auth().verifyIdToken(req.query.idToken).then(function(decodedToken) {
+                    var uid = decodedToken.sub;
+                    models.position.findOne({
+                        where: {
+                            id: req.params.id
+                        }
+                    }).then(function (position) {
+                        models.tag.findOne({
+                            where: {
+                                name: req.params.tag_name
+                            }
+                        }).then(function (tag) {
+                            position.removeTag(tag).then( function(removed) {
+                                    res.status(204).json({});
+                            })
+                        })
+                    })
+                }).catch(function(error) {
+                    res.status(511).json({error: "Error"});
+                });
+            } else {
+                res.status(401).json({error: "Forbidden"});
+            }
+
+        }
+    }), new Resource('get tags by position', '/:id/tags/', {
+            get: (req, res) => {
+                if(req.query.idToken) {
+                    firebase.auth().verifyIdToken(req.query.idToken).then(function(decodedToken) {
+                        var uid = decodedToken.sub;
+                        models.position.findOne({
+                            where: {
+                                id: req.params.id
+                            }
+                        }).then(function(position) {
+                            position.getTags().then(function(tags){
+                                res.status(200).json({
+                                    tags: tags
+                                });
+                            })
+                        })
+                    }).catch(function(error) {
+                        res.status(511).json({error: "Error"});
+                    });
+                } else {
+                    res.status(401).json({error: "Forbidden"});
+                }
+            },
+            delete: (req, res) => {
+                if(req.query.idToken) {
+                    firebase.auth().verifyIdToken(req.query.idToken).then(function(decodedToken) {
+                        var uid = decodedToken.sub;
+                        models.position.findOne({
+                            where: {
+                                id: req.params.id
+                            }
+                        }).then(function (position) {
+                            position.setTags([]).then(function(tags) {
+                                res.status(204).json({});
+                            })
+                        })
+                    }).catch(function(error) {
+                        res.status(511).json({error: "Error"});
+                    });
+                } else {
+                    res.status(401).json({error: "Forbidden"});
+                }
+            }
+    }), new Resource('add candidate to position', '/:id/cadidates/:candidate_id', {
         post: (req, res) => {
             if(req.query.idToken) {
                 firebase.auth().verifyIdToken(req.query.idToken).then(function(decodedToken) {
