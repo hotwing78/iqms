@@ -55,10 +55,6 @@ function taggingService($http, $rootScope, authService) {
                 selectedTags[tag] = tags[tag];
             }
         });
-
-        var showTags = $.merge([], addedTags);
-        showTags = $.merge(showTags, savedTags);
-
         return selectedTags;
     }
 
@@ -69,11 +65,6 @@ function taggingService($http, $rootScope, authService) {
 
         return showTags;
     }
-
-    var getTech = function() {
-        return isTech;
-    }
-
     //Creation Methods
 
     var createNewTag = function(name) {
@@ -189,6 +180,7 @@ function taggingService($http, $rootScope, authService) {
             });
         });
     }
+
 
     var persistTag = function(id,type) {
         authService.getUserToken(function(idToken) {

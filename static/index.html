@@ -81,7 +81,11 @@
     <script src="assets/js/toastr.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-sanitize.js"></script>
 
+<<<<<<< HEAD
     CONTROLLERS
+=======
+    <!-- CONTROLLERS -->
+>>>>>>> iq14-refactor-port
     <script src="control/create_interview_controller.js"></script>
     <script src="control/list_interview_controller.js"></script>
     <script src="control/create_question_controller.js"></script>
@@ -97,6 +101,7 @@
     <script src="control/manage_user_controller.js"></script>
     <script src="control/list_position_controller.js"></script>
     <script src="control/create_position_controller.js"></script>
+
 
     <!-- SERVICES -->
     <script src="services/authService.js"></script>
@@ -304,9 +309,9 @@
         app.factory('socket', ['$http', function($http) {
             var socket;
 
-            $http.get('../../config/config.json').success(function(config) {
-                socket = io.connect(config.development.webSocketUrl);
-            });
+            // $http.get('../../config/config.json').success(function(config) {
+            //     socket = io.connect(config.development.webSocketUrl);
+            // });
 
             return {
                 on: function(eventName, callback){
