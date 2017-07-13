@@ -139,7 +139,7 @@ function create_interview_controller($scope, $http, $mdDialog, $location,
     var loadTags = function(idToken) {
         $http.get('../../interview/' + interviewID + '/tags?idToken=' + idToken).success(function(data) {
             data.tags.forEach(function(tag) {
-          
+
                 $('#tagbox').tagsinput('add', tag.name);
             });
         })

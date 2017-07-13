@@ -4,7 +4,7 @@
   "descritption": "interview question management system",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jackmeagher/iqms.git"
+    "url": "git+https://github.com/geocent/iqms.git"
   },
   "license": "UNLICENSED",
   "dependencies": {

@@ -50,7 +50,7 @@
                             <div class="col-md-8" id="subtopic-box">
                                 <label>Tag List</label>
                                 <br>
-                                <tag ng-repeat="(key, value) in questionData.selectedTags track by $index"></tag>
+                                <tag ng-repeat="(key, value) in positionData.selectedTags track by $index"></tag>
                             </div>
                         </div>
                         <div class="row">
@@ -93,7 +93,7 @@
                                     </p>
                                 </div>
                             </div>
-                            
+
                             <input id="modelValue" type="range" ng-model="value"
                                     min="{{options.min}}" step="{{options.step}}"
                                     max="{{options.max}}" slider-tooltip="show"
@@ -102,7 +102,7 @@
                                     title="{{value}}" ng-click="updateLimits()" ng-change="updateLimits()"
                                     >
                         </div>
-                        
+
 
                         <br>
                     </div>
@@ -113,7 +113,7 @@
                             <div>
                                 <input ng-repeat="answer in questionData.answers track by $index" ng-model="questionData.answers[$index]" id="questionDataanswer{{$index}}"class="form-control answer-box" type="text" style="text-align:left; margin-bottom:1%;" value="{{answer}}">
                             </div>
-                     
+
                             <button class="btn btn-success btn-add" type="button" ng-click="addAnswer()"
                                     id="addAnswerButton">
                                 <span class="glyphicon glyphicon-plus"></span>

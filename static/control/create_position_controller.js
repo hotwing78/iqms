@@ -1,9 +1,10 @@
 function create_position_controller ($scope, $rootScope, $location, $http, taggingService, authService,userService,popupService) {
 
     $scope.positionData = {
+       name: '',
        tags:[],
        selectedTags: {},
-       text: ' ',
+       description: '',
     }
 
     $scope.positions = {};
@@ -14,14 +15,38 @@ function create_position_controller ($scope, $rootScope, $location, $http, taggi
     $scope.cancel = function() {
         $location.path('/lp');
     };
+   //This function checks the path for an existing position id for edit
+
+
+    var loadPosition = function() {
+        taggingService.resetTags();
+        if ($location.hash() !== '') {
+            instantiateEditPosition();
+        }
+    };
+
+    var instantiateEditPosition = function() {
+        authService.getUserToken(function(idToken) {
+            $http.get('../../position/' + $location.hash() + "?idToken=" + idToken).success(function(data) {
+                $scope.positionData.text = data.position.name;
+                $scope.positionData.description = data.position.description;
+                taggingService.loadSavedTags(data.position.id, idToken,'position');
+                refreshTags();
+            })
+        });
+    };
+
+    var refreshTags = function() {
+        $scope.positionData.tags = taggingService.getTags();
+        $scope.positionData.selectedTags = taggingService.getSelectedTags();
+    };
 
     $scope.addPosition = function(position) {
-        if (position && !$scope.positions[position]) {
-            $scope.positions[position] = {name: position, description: ""};
+        if (positionData && !$scope.positions[position]) {
             popupService.init("Description", "Add job description for " + position, "" ,"");
             popupService.showPrompt(this, function() {
-                $scope.positions[position].description = popupService.getResult();
-                $scope.selectedPosition = position;
+                $scope.positionsData.description = popupService.getResult();
+                $scope.positionData.name = position;
                 savePosition(position);
             });
         }
@@ -31,25 +56,17 @@ function create_position_controller ($scope, $rootScope, $location, $http, taggi
         refreshTags();
     });
 
-
-    var loadScreen = function() {
-        authService.getUserToken(function(idToken) {
-            taggingService.resetTags();
-            loadPositions(idToken);
+    //This function brings up the position from edit button on listPositions.html
+    var loadPosi = function(idToken, id) {
+        $http.get('../../position/' + id + "?idToken=" + idToken).success(function(result) {
+            $scope.positionText = result.position.name;
+            $scope.positionText += getPositionID({type: "Internal", info: result.position});
+            $scope.selectedPosition = $scope.positionText;
+            $scope.positionDescription = result.position.description;
         });
     };
 
-    var loadPositions = function(idToken) {
-        $http.get('../../position?idToken=' + idToken).success(function(data) {
-            data.positions.forEach(function(position, index) {
-                var fullName = position.name + getPositionID({type: "Internal", info: position});
-                taggingService.loadSavedTags(position.id, idToken,'position');
-                refreshTags();
-                $scope.positions[fullName] = position;
-                $scope.positions[fullName].name = fullName;
-            });
-        });
-    };
+
 
     var savePosition = function(position) {
         authService.getUserToken(function(idToken) {
@@ -91,10 +108,7 @@ function create_position_controller ($scope, $rootScope, $location, $http, taggi
         return formatted;
     };
 
-    var refreshTags = function() {
-        $scope.positionData.tags = taggingService.getTags();
-        $scope.positionData.selectedTags = taggingService.getSelectedTags();
-    };
 
-    loadScreen();
+    loadPosition();
+
 }

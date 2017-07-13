@@ -32,7 +32,7 @@
                                         placeholder="Search for Position">
                                     <md-item-template>
                                                     <span md-highlight-text="positionText"
-                                                          md-highlight-flags="^i">{{position}}</span>
+                                                          md-highlight-flags="^i" ng-model = "positionData.name">{{position}}</span>
                                     </md-item-template>
 
                                 </md-autocomplete>
@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <label>Description</label>
-                                    <textarea class="form-control" rows="5" id="comment" disabled>{{positions[selectedPosition].description}}</textarea>
+                                    <textarea class="form-control" rows="5" id="comment">{{positionData.description}}</textarea>
                                 </div>
                             </div>
 

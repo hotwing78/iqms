@@ -211,7 +211,6 @@ function taggingService($http, $rootScope, authService) {
         getTags: getTags,
         getSelectedTags: getSelectedTags,
         getSelectedTagsAsArray: getSelectedTagsAsArray,
-        getTech: getTech,
         createNewTag: createNewTag,
         addTag: addTag,
         removeTag: removeTag,
