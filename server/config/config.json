@@ -1,0 +1,15 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "123456",
+    "database": "iqms_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port" : 5432,
+    "mainPort": 3000,
+    "firebaseApiKey": "AIzaSyA-y80SGCDJ1dTXnkNel9pJGroR435qP2A",
+    "firebaseAuthDomain": "iqms-70a2a.firebaseapp.com",
+    "firebaseDatabaseURL": "https://iqms-70a2a.firebaseio.com",
+    "firebaseServiceAccount": "../config/iqms-d2163456f0e5.json"
+  }
+}
