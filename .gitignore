@@ -39,5 +39,5 @@ node_modules
 
 .idea
 
-config/config.json
-config/iqms-*.json
+*./config.json
+*./config/iqms-*.json
