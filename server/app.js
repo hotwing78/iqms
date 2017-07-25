@@ -10,8 +10,8 @@ var io = require('socket.io').listen(server);
 var config = require('./config/config.json');
 var firebase = require('firebase');
 firebase.initializeApp({
-    serviceAccount: config.development.firebaseServiceAccount,
-    databaseURL: config.development.firebaseDatabaseURL
+    serviceAccount: config.firebaseServiceAccount,
+    databaseURL: config.firebaseDatabaseURL
 });
 
 app.set('port', process.env.PORT || 5000);
