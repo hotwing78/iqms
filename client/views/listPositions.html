@@ -1,0 +1,86 @@
+<div ng-controller="list_positions_controller">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="page-head-line">List of positions</h1>
+            <h1 class="page-subhead-line">View or edit positions</h1>
+            <div class="col-md-6" style="width:100%;">
+                <!--    Context Classes  -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <form>
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+
+                                    <input type="text" class="form-control" placeholder="Search Positions" ng-model="searchPositions">
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <h2>Open Positions</h2>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+
+                                        <th>
+                                            <a ng-click="sortType = 'position'; sortReverse = !sortReverse" style="cursor:pointer;">
+                                            Position
+                                                <span ng-show="sortType == 'position' && !sortReverse"
+                                                      class="fa fa-caret-down"></span>
+                                                <span ng-show="sortType == 'position' && sortReverse"
+                                                      class="fa fa-caret-up"></span>
+                                        </a>
+                                        </th>
+                                        <th>
+                                            <a ng-click="sortType = 'position'; sortReverse = !sortReverse" style="cursor:pointer;">
+                                            Description
+                                                <span ng-show="sortType == 'position' && !sortReverse"
+                                                      class="fa fa-caret-down"></span>
+                                                <span ng-show="sortType == 'position' && sortReverse"
+                                                      class="fa fa-caret-up"></span>
+                                        </a>
+                                        </th>
+                                        <th>
+                                            Tags
+
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody ng-repeat="position in positions | orderBy:sortType:sortReverse | filter:searchPositions">
+                                    <tr class="success">
+                                        <td>{{position.name}}</td>
+                                        <td>{{position.description}}</td>
+                                        <td>{{position.tagList}}</td>
+
+                                        <td>
+                                            <button class="btn btn-warning edit-question" ng-click="loadPosition(position.id)">
+                                            Edit
+                                        </button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger delete-question" ng-click="deletePosition($index, position)">
+                                            Delete
+                                        </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button type="button" class="btn-lg btn-success" onclick="window.location.href='#cp'" style="margin-left:auto; margin-right:auto;">
+                                 Create New Position
+                             </button>
+                        </div>
+
+                    </div>
+                </div>
+                <!--  end  Context Classes  -->
+            </div>
+        </div>
+    </div>
+    <!-- /. PAGE INNER  -->
+</div>
+<!-- /. PAGE WRAPPER  -->
