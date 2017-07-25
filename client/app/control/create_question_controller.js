@@ -52,7 +52,7 @@ function create_question_controller ($scope, $rootScope, $location, $http, taggi
             if(id > 0) {
                 $http.put('../../question/' + id + "?idToken=" + idToken, questionData).success(function(created) {
                     $location.path('/qm');
-                    taggingService.persistTag(id);
+                    taggingService.persistTag(id,'question');
                 });
             } else if(id == -1) {
                 $http.post('../../question?idToken=' + idToken,  questionData).success(function(created) {
