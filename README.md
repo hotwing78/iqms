@@ -28,16 +28,12 @@ $ ALTER USER postgres WITH PASSWORD '1233456';
 $ CREATE DATABASE iqms_development;
 ```
 
-To start: back in /iqms:
-```
-$ chmod +x bin/www_test
-$ cd bin
-$ ./www_test
+To start:In terminal type "node server/app.js"
 ```	
 
 To open app: from a browser, go to:
 ```
-http://localhost:3000/static/www/
+http://localhost:3000
 ```	
 
 ###Notes:
@@ -139,14 +135,6 @@ A config.json should be created and placed in the config folder of the root of t
   <tr>
     <td>mainPort</td>
     <td>This is the main port used in the url to connect to the IQMS</td>
-  </tr>
-  <tr>
-    <td>webSocketHost</td>
-    <td>This is the host for the web sockets</td>
-  </tr>
-  <tr>
-    <td>webSocketPort</td>
-    <td>This is the port that the web sockets communicate on</td>
   </tr>
   <tr>
     <td>firebaseApiKey</td>
